@@ -16,5 +16,9 @@ public class UserService {
         return users.stream().filter(user -> user.getName().contains(containName)).collect(Collectors.toList());
     }
 
+    public void run(javax.servlet.http.HttpServletRequest request) throws ClassNotFoundException {
+        String name = request.getParameter("name");
+        Class clazz = Class.forName(name);  // Noncompliant
+    }
 }
 
