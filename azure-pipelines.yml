@@ -1,24 +1,19 @@
-# Starter pipeline
-
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- task: Gradle@3
-  inputs:
-    gradleWrapperFile: 'gradlew'
-    tasks: 'build'
-    publishJUnitResults: true
-    testResultsFiles: '**/TEST-*.xml'
-    javaHomeOption: 'JDKVersion'
-    sonarQubeRunAnalysis: false
-    spotBugsAnalysis: false
-
-
-- task: SonarCloudPrepare@1
-  inputs:
-    SonarCloud: 'Sonarcloud'
-    organization: 'finallabdevsecops'
-    scannerMode: 'MSBuild'
-    projectKey: 'FinalLabDevSecOps_spring-boot-kubernetes'
-    projectName: 'FinalLabDevSecOps'
+stages:
+- stage: SAST
+  jobs:
+  - job: Job
+    displayName: 'SAST FinalLabDevSecOps  SonarCloud'
+    steps:
+    - task: Maven@4
+      inputs:
+        mavenPomFile: 'pom.xml'
+        publishJUnitResults: true
+        testResultsFiles: '**/surefire-reports/TEST-*.xml'
+        javaHomeOption: 'JDKVersion'
+        mavenVersionOption: 'Default'
+        mavenAuthenticateFeed: false
+        effectivePomSkip: false
+        sonarQubeRunAnalysis: false
