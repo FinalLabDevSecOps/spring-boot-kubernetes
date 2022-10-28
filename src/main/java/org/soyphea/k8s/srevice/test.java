@@ -1,13 +1,4 @@
-public class test extends AppCompatActivity {
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        // The intent used to start this exported component is retrieved
-        Intent intent = getIntent();
-
-        // extract the embedded Intent
-        Intent forward = (Intent) intent.getParcelableExtra("anotherintent");
-
-        // redirect the embedded Intent
-        startActivity(forward); // Noncompliant
-    }
+protected void test (HttpServletRequest req, HttpServletResponse resp) throws IOException {
+  String location = req.getParameter("url");
+  resp.sendRedirect(location); // Noncompliant
 }
