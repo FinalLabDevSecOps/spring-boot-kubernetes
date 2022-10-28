@@ -1,4 +1,10 @@
-protected void test (HttpServletRequest req, HttpServletResponse resp) throws IOException {
-  String location = req.getParameter("url");
-  resp.sendRedirect(location); // Noncompliant
+import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+
+public void test(HttpServletRequest request) throws IOException {
+  String folder = request.getParameter("folder");
+
+  String cmd = "mkdir " + folder;
+
+  Runtime.getRuntime().exec(cmd); // Noncompliant
 }
