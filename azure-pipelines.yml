@@ -86,4 +86,23 @@ stages:
     - task: DockerInstaller@0
       inputs:
         dockerVersion: '17.09.0-ce'
-    
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'docker-connection'
+        repository: 'docker-finallab-devsecops'
+        command: 'build'
+        Dockerfile: '**/Dockerfile'
+        tags: 'latest'
+    - script: |
+          sudo apt-get install -y rpm
+          wget https://github.com/aquasecurity/trivy/releases/download/v0.27.1/trivy_0.27.1_Linux-64bit.deb
+          sudo dpkg -i trivy_0.27.1_Linux-64bit.deb
+          trivy image lagc/docker-finallab-devsecops:latest
+      displayName: Image Scan
+
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'docker-connection'
+        repository: 'lagc/docker-finallab-devsecops'
+        command: 'push'
+        tags: 'latest'
