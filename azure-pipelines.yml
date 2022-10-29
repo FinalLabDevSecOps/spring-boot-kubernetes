@@ -46,12 +46,16 @@ stages:
         SonarCloud: 'Sonarcloud'
         organization: 'finallabdevsecops'
 
+
+
+
 - stage: SCA
   jobs:
   - job: 
     displayName: 'SCA FinalLabDevSecOps Dependency Check'
     steps:
     - task: Maven@4
+      displayName: 'Maven Build'
       inputs:
         mavenPomFile: 'pom.xml'
         publishJUnitResults: true
@@ -61,12 +65,21 @@ stages:
         mavenAuthenticateFeed: false
         effectivePomSkip: false
         sonarQubeRunAnalysis: false
+#    - script: find $(Build.SourcesDirectory) -name "*.jar"
     - task: dependency-check-build-task@6
       inputs:
         projectName: 'Sonarcloud'
         scanPath: '$(Build.SourcesDirectory)/target'
-        format: 'HTML'
-
+        format: 'ALL'
+        reportsDirectory: '$(Build.SourcesDirectory)/dependency'
+    - script: |
+        numvulnerabilities=$(grep ",HIGH," $(Build.SourcesDirectory)/dependency/dependency-check-report.csv | wc -l)
+        echo "HIGH Vulnerabilidades en analisis dependency-check: " $numvulnerabilities 
+        if [ $numvulnerabilities -gt 0 ];
+        then 
+          echo "Pipeline quebrado por deteccion de vulnerabilidades de dependency check " $numvulnerabilities " > 0 HIGH Vulnerabilities"
+          exit 1;
+        fi;
 - stage: DAST
   jobs:
   - job: Job
