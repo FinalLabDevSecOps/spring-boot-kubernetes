@@ -89,7 +89,7 @@ stages:
     - task: Docker@2
       inputs:
         containerRegistry: 'docker-connection'
-        repository: 'docker-finallab-devsecops'
+        repository: 'lagc/docker-finallab-devsecops'
         command: 'build'
         Dockerfile: '**/Dockerfile'
         tags: 'latest'
