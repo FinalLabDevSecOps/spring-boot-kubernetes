@@ -15,10 +15,9 @@ public class UserService {
 
         return users.stream().filter(user -> user.getName().contains(containName)).collect(Collectors.toList());
     }
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String name = req.getParameter("name");
-        PrintWriter out = resp.getWriter();
-        out.write("Hello " + name); // Noncompliant
+    public void run(javax.servlet.http.HttpServletRequest request) throws ClassNotFoundException {
+        String name = request.getParameter("name");
+        Class clazz = Class.forName(name);  // Noncompliant
     }
 }
 
