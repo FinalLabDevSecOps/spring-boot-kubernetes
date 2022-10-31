@@ -72,7 +72,7 @@ stages:
     - script: |
         numvulnerabilities=$(grep ",HIGH," $(Build.SourcesDirectory)/dependency/dependency-check-report.csv | wc -l)
         echo "HIGH Vulnerabilidades en analisis dependency-check: " $numvulnerabilities 
-        if [ $numvulnerabilities -gt 70 ];
+        if [ $numvulnerabilities -gt 0 ];
         then 
           echo "Pipeline quebrado por deteccion de vulnerabilidades de dependency check " $numvulnerabilities " > 0 HIGH Vulnerabilities"
           exit 1;
